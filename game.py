@@ -37,3 +37,47 @@ class game(object) :
 			return True
 		except :
 			return False
+
+	
+	def moveRowHoriz(self, row):
+		changed = False
+		for tileIndex in range(len(row) - 1):
+			thisIndex = tileIndex
+			if not row[thisIndex]:
+				changed = True
+				row[thisIndex] = row[thisIndex + 1]
+				row[thisIndex + 1] = 0
+		return row, changed
+
+	def move(self, direction):
+		changed = False
+		if direction == 'left':
+			for i in range(len(self.board)):
+				row = self.board[i]
+				row, changed = self.moveRowHoriz(row)
+				self.board[i] = row
+		elif direction == 'right':
+			for i in range(len(self.board)):
+				row = self.board[i]
+				row = row[::-1]
+				row, changed = self.moveRowHoriz(row)
+				row = row[::-1]
+				self.board[i] = row
+		elif direction == 'down':
+		elif direction == 'up':
+		return changed
+
+	def merge(self, direction):
+		if direction == 'left':
+			for row in board:
+				for tileIndex in range(len(row) - 1):
+					if row[tileIndex] == row[tileIndex + 1]:
+						row[tileIndex] *= 2
+						row[tileIndex + 1] == 0
+
+	def slide(self, direction):
+		changed = move(direction)
+		while changed:
+			changed = move(direction)
+		# merge
+		# move
