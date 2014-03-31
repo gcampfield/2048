@@ -6,7 +6,7 @@ def playGameHuman(size=4, prob=.9, goal=2048, numStartTiles=2):
 	while playerGame.canMove():
 		move = raw_input('Move: ').lower()
 		if move == 'exit':
-			exit()
+			break
 		try:
 			playerGame.slide(move)
 			playerGame.printBoard()

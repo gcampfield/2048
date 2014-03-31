@@ -219,24 +219,18 @@ class game(object):
 			self.board = self.shiftRight(self.board)
 			self.board, self.score = self.mergeRight(self.board, self.score)
 			self.board = self.shiftRight(self.board)
-			if compareBoard != self.board and addTile:
-				self.addTile()
 		elif direction == 'up' or direction == 'u':
 			invertedBoard = self.invert(self.board)
 			invertedBoard = self.shiftLeft(invertedBoard)
 			invertedBoard, self.score = self.mergeLeft(invertedBoard, self.score)
 			invertedBoard = self.shiftLeft(invertedBoard)
 			self.board = self.invert(invertedBoard)
-			if compareBoard != self.board and addTile:
-				self.addTile()
 		elif direction == 'down' or direction == 'd':
 			invertedBoard = self.invert(self.board)
 			invertedBoard = self.shiftRight(invertedBoard)
 			invertedBoard, self.score = self.mergeRight(invertedBoard, self.score)
 			invertedBoard = self.shiftRight(invertedBoard)
 			self.board = self.invert(invertedBoard)
-			if compareBoard != self.board and addTile:
-				self.addTile()
 		if compareBoard != self.board and addTile:
 			self.addTile()
 		else:
