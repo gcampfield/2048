@@ -10,14 +10,14 @@ class InvalidMoveError(Exception) :
 class game(object):
 	def __init__(self, size=4, prob=.9, goal=2048, numStartTiles=2):
 		'''
-		Initializes the game with a board w*h big with numStartTiles
+		Initializes the game with a board size x size big with numStartTiles
 		tiles to begin
 
 		w - width of the board
 		h - height of the board
 		prob - probability of spawning a 2 over a 4
 		goal - the number used check if the game is won
-		numStartTiles - the numer of tiles to begin with
+		numStartTiles - the number of tiles to begin with
 		'''
 		self.size = size
 		self.board = [[0 for a in range(size)] for b in range(size)]
@@ -71,7 +71,7 @@ class game(object):
 		Places a tile at loc if loc given, or else it places one
 		in a random empty tile
 
-		loc - tupple formatted (row, col)
+		loc - tuple formatted (row, col)
 		'''
 		try:
 			row, col = random.choice(self.getEmptyTiles())
@@ -156,7 +156,8 @@ class game(object):
 
 	def slide(self, direction, addTile=True):
 		'''
-		Makes a move in the game and addes a tile
+		Makes a move in the game and adds a tile if addTile is
+		True
 
 		returns: True if a move was made, else False
 		'''
