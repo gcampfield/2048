@@ -87,14 +87,14 @@ class game(object):
 
 		returns: new board with elements shifted LEFT
 		'''
-		changed = not test
-		board = [filter(lambda x: x!=0, row) for row in board]
-		for row in board :
-			while len(row) != len(board) :
+		newBoard = [row for row in board]
+		newBoard = [filter(lambda x: x!=0, row) for row in newBoard]
+		for row in newBoard :
+			while len(row) != len(newBoard) :
 				changed = True
 				row.append(0)
-		if changed :
-			return board
+		if not test or newBoard != board:
+			return newBoard
 		else :
 			raise InvalidMoveError
 
@@ -105,16 +105,12 @@ class game(object):
 
 		returns: new board with elements shifted RIGHT
 		'''
-		changed = False
-		board = [filter(lambda x: x!=0, row) for row in board]
-		for row in board :
-			while len(row) != len(board) :
-				changed = True
+		newBoard = [row for row in board]
+		newBoard = [filter(lambda x: x!=0, row) for row in newBoard]
+		for row in newBoard :
+			while len(row) != len(newBoard) :
 				row.insert(0, 0)
-		if changed :
-			return board
-		else :
-			raise InvalidMoveError
+		return newBoard
 
 	@staticmethod
 	def mergeLeft(board, currentScore):
@@ -140,7 +136,7 @@ class game(object):
 		returns: the new board, new score
 		'''
 		for row in board:
-			for i in range(len(row)-1):
+			for i in range(len(row)-1)[::-1]:
 				if row[i] == row[i+1] :
 					currentScore += row[i]*2
 					row[i+1] = row[i+1]*2
@@ -161,33 +157,35 @@ class game(object):
 
 		returns: True if a move was made, else False
 		'''
-		try:
-			if direction == 'left':
-				self.board = self.shiftLeft(self.board, True)
-				self.board, self.score = self.mergeLeft(self.board, self.score)
-				self.board = self.shiftLeft(self.board)
-				if addTile: self.addTile()
-			elif direction == 'right':
-				self.board = self.shiftRight(self.board, True)
-				self.board, self.score = self.mergeRight(self.board, self.score)
-				self.board = self.shiftRight(self.board)
-				if addTile: self.addTile()
-			elif direction == 'up':
-				invertedBoard = self.invert(self.board)
-				invertedBoard = self.shiftLeft(invertedBoard, True)
-				invertedBoard, self.score = self.mergeLeft(invertedBoard, self.score)
-				invertedBoard = self.shiftLeft(invertedBoard)
-				self.board = self.invert(invertedBoard)
-				if addTile: self.addTile()
-			elif direction == 'down':
-				invertedBoard = self.invert(self.board)
-				invertedBoard = self.shiftRight(invertedBoard, True)
-				invertedBoard, self.score = self.mergeRight(invertedBoard, self.score)
-				invertedBoard = self.shiftRight(invertedBoard)
-				self.board = self.invert(invertedBoard)
-				if addTile: self.addTile()
-			return True
-		except:
-			return False
-
+		compareBoard = [row for row in self.board]
+		if direction == 'left':
+			self.board = self.shiftLeft(self.board)
+			self.board, self.score = self.mergeLeft(self.board, self.score)
+			self.board = self.shiftLeft(self.board)
+		elif direction == 'right':
+			self.board = self.shiftRight(self.board)
+			self.board, self.score = self.mergeRight(self.board, self.score)
+			self.board = self.shiftRight(self.board)
+			if compareBoard != self.board and addTile:
+				self.addTile()
+		elif direction == 'up':
+			invertedBoard = self.invert(self.board)
+			invertedBoard = self.shiftLeft(invertedBoard)
+			invertedBoard, self.score = self.mergeLeft(invertedBoard, self.score)
+			invertedBoard = self.shiftLeft(invertedBoard)
+			self.board = self.invert(invertedBoard)
+			if compareBoard != self.board and addTile:
+				self.addTile()
+		elif direction == 'down':
+			invertedBoard = self.invert(self.board)
+			invertedBoard = self.shiftRight(invertedBoard)
+			invertedBoard, self.score = self.mergeRight(invertedBoard, self.score)
+			invertedBoard = self.shiftRight(invertedBoard)
+			self.board = self.invert(invertedBoard)
+			if compareBoard != self.board and addTile:
+				self.addTile()
+		if compareBoard != self.board and addTile:
+			self.addTile()
+		else:
+			raise InvalidMoveError
 
