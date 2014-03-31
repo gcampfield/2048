@@ -1,19 +1,23 @@
 import game
 
-def playGameHuman(size=4, prob=.9, goal=2048, numStartTiles=2) :
+def playGameHuman(size=4, prob=.9, goal=2048, numStartTiles=2):
 	playerGame = game.game(size, prob, goal, numStartTiles)
 	playerGame.printBoard()
-	while not playerGame.isWon() :
+	while playerGame.canMove():
 		move = raw_input('Move: ').lower()
-		if move == 'exit' :
+		if move == 'exit':
 			exit()
-		try :
+		try:
 			playerGame.slide(move)
 			playerGame.printBoard()
 			print '\n'
-		except :
+		except:
 			print 'Invalid Move...'
-	print 'You win!'
+	if playerGame.isWon():
+		print 'You win!'
+	else:
+		print 'Game over.'
 	print 'Your score:', playerGame.getScore()
 
-playGameHuman()
+if __name__ == '__main__':
+	playGameHuman()

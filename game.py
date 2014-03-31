@@ -63,6 +63,32 @@ class game(object):
 				return True
 		return False
 
+	def canMove(self) :
+		'''
+		Sees if there is a possible move that you can make
+		'''
+		invertedBoard = self.invert(self.board)
+		if self.shiftLeft(self.board) != self.board or self.mergeLeft(self.board, 0)[0] != self.board:
+			return True
+		elif self.shiftRight(self.board) != self.board or self.mergeRight(self.board, 0)[0] != self.board:
+			return True
+		elif self.shiftLeft(invertedBoard) != invertedBoard or self.mergeLeft(invertedBoard, 0)[0] != invertedBoard:
+			return True
+		elif self.shiftRight(invertedBoard) != invertedBoard or self.mergeRight(invertedBoard, 0)[0] != invertedBoard:
+			return True
+		return False
+
+
+	def isOver(self) :
+		'''
+		Sees if the game is won or if no move is possible
+
+		returns: True if the game is over, else False
+		'''
+		if self.isWon() or not self.canMove():
+			return True
+		return False
+
 	def getScore(self):
 		'''
 		returns: the current score of the game
