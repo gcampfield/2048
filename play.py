@@ -10,6 +10,7 @@ def playGameHuman(size=4, prob=.9, goal=2048, numStartTiles=2) :
 		try :
 			playerGame.slide(move)
 			playerGame.printBoard()
+			print '\n'
 		except :
 			print 'Invalid Move...'
 	print 'You win!'

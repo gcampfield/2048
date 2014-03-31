@@ -1,5 +1,29 @@
 import random
 
+try:
+	from colorama import init, Fore, Style
+	init(autoreset=True)
+	COLORAMA = True
+	COLORS = {
+		   0: Fore.WHITE,
+           2: Fore.GREEN,
+           4: Fore.BLUE + Style.BRIGHT,
+           8: Fore.CYAN,
+          16: Fore.RED,
+          32: Fore.MAGENTA,
+          64: Fore.CYAN,
+         128: Fore.BLUE + Style.BRIGHT,
+         256: Fore.MAGENTA,
+         512: Fore.GREEN,
+        1024: Fore.RED,
+        2048: Fore.YELLOW,
+        4096: Fore.MAGENTA,
+        8192: Fore.CYAN,
+    }
+except:
+	COLORAMA = False
+	print "\033[93mNOTE: in order for text to be colored, you must install 'termred' from PyPI\033[0m\n"
+
 class InvalidMoveError(Exception) :
 	'''
 	Raised by game.shiftLeft or game.shiftRight if the move
@@ -51,7 +75,10 @@ class game(object):
 		'''
 		for row in self.board:
 			for val in row:
-				print '{:<6}'.format(val),
+				if COLORAMA :
+					print '{0}{1:<6}'.format(COLORS[val], val),
+				else :
+					print '{:<6}'.format(val),
 			print
 
 	def getEmptyTiles(self):
@@ -158,17 +185,17 @@ class game(object):
 		returns: True if a move was made, else False
 		'''
 		compareBoard = [row for row in self.board]
-		if direction == 'left':
+		if direction == 'left' or direction == 'l':
 			self.board = self.shiftLeft(self.board)
 			self.board, self.score = self.mergeLeft(self.board, self.score)
 			self.board = self.shiftLeft(self.board)
-		elif direction == 'right':
+		elif direction == 'right' or direction == 'r':
 			self.board = self.shiftRight(self.board)
 			self.board, self.score = self.mergeRight(self.board, self.score)
 			self.board = self.shiftRight(self.board)
 			if compareBoard != self.board and addTile:
 				self.addTile()
-		elif direction == 'up':
+		elif direction == 'up' or direction == 'u':
 			invertedBoard = self.invert(self.board)
 			invertedBoard = self.shiftLeft(invertedBoard)
 			invertedBoard, self.score = self.mergeLeft(invertedBoard, self.score)
@@ -176,7 +203,7 @@ class game(object):
 			self.board = self.invert(invertedBoard)
 			if compareBoard != self.board and addTile:
 				self.addTile()
-		elif direction == 'down':
+		elif direction == 'down' or direction == 'd':
 			invertedBoard = self.invert(self.board)
 			invertedBoard = self.shiftRight(invertedBoard)
 			invertedBoard, self.score = self.mergeRight(invertedBoard, self.score)
