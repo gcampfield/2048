@@ -140,8 +140,7 @@ class game(object):
 
 		returns: new board with elements shifted LEFT
 		'''
-		newBoard = [row for row in board]
-		newBoard = [filter(lambda x: x!=0, row) for row in newBoard]
+		newBoard = [filter(lambda x: x!=0, row) for row in board]
 		for row in newBoard :
 			while len(row) != len(newBoard) :
 				changed = True
@@ -158,8 +157,7 @@ class game(object):
 
 		returns: new board with elements shifted RIGHT
 		'''
-		newBoard = [row for row in board]
-		newBoard = [filter(lambda x: x!=0, row) for row in newBoard]
+		newBoard = [filter(lambda x: x!=0, row) for row in board]
 		for row in newBoard :
 			while len(row) != len(newBoard) :
 				row.insert(0, 0)
@@ -172,14 +170,14 @@ class game(object):
 
 		returns: the new board, new score
 		'''
-		for row in board:
+		newBoard = board[:]
+		for row in newBoard:
 			for i in range(len(row)-1):
 				if row[i] == row[i+1] :
 					currentScore += row[i]*2
 					row[i] = row[i]*2
 					row[i+1] = 0
-		return board, currentScore
-
+		return newBoard, currentScore
 
 	@staticmethod
 	def mergeRight(board, currentScore):
@@ -188,13 +186,14 @@ class game(object):
 
 		returns: the new board, new score
 		'''
-		for row in board:
+		newBoard = board[:]
+		for row in newBoard:
 			for i in range(len(row)-1)[::-1]:
-				if row[i] == row[i+1] :
+				if row[i] == row[i+1]:
 					currentScore += row[i]*2
 					row[i+1] = row[i+1]*2
 					row[i] = 0
-		return board, currentScore
+		return newBoard, currentScore
 
 	@staticmethod
 	def invert(board):
@@ -210,7 +209,7 @@ class game(object):
 
 		returns: True if a move was made, else False
 		'''
-		compareBoard = [row for row in self.board]
+		compareBoard = self.board[:]
 		if direction == 'left' or direction == 'l':
 			self.board = self.shiftLeft(self.board)
 			self.board, self.score = self.mergeLeft(self.board, self.score)
