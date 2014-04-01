@@ -1,5 +1,5 @@
 import random
-from os import system
+import os
 
 try:
 	from colorama import init, Fore, Style
@@ -53,7 +53,7 @@ class game(object):
 			self.addTile()
 
 	def loop(self):
-		system('cls' if os.name == 'nt' else 'clear')
+		os.system('cls' if os.name == 'nt' else 'clear')
 		self.printBoard()
 		while not self.isOver():
 			try:
@@ -66,7 +66,7 @@ class game(object):
 					self.addTile()
 				else:
 					self.slide(move)
-				system('cls' if os.name == 'nt' else 'clear')
+				os.system('cls' if os.name == 'nt' else 'clear')
 				self.printBoard()
 			except InvalidMoveError:
 				print 'Invalid Move.'
