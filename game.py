@@ -134,7 +134,7 @@ class game(object):
 			return False
 
 	@staticmethod
-	def shiftLeft(board, test=False):
+	def shiftLeft(board):
 		'''
 		Moves every element in the board all the way to the LEFT
 
@@ -143,12 +143,8 @@ class game(object):
 		newBoard = [filter(lambda x: x!=0, row) for row in board]
 		for row in newBoard :
 			while len(row) != len(newBoard) :
-				changed = True
 				row.append(0)
-		if not test or newBoard != board:
-			return newBoard
-		else :
-			raise InvalidMoveError
+		return newBoard
 
 	@staticmethod
 	def shiftRight(board):
@@ -170,7 +166,7 @@ class game(object):
 
 		returns: the new board, new score
 		'''
-		newBoard = board[:]
+		newBoard = [row[:] for row in board]
 		for row in newBoard:
 			for i in range(len(row)-1):
 				if row[i] == row[i+1] :
@@ -186,7 +182,7 @@ class game(object):
 
 		returns: the new board, new score
 		'''
-		newBoard = board[:]
+		newBoard = [row[:] for row in board]
 		for row in newBoard:
 			for i in range(len(row)-1)[::-1]:
 				if row[i] == row[i+1]:
@@ -197,6 +193,9 @@ class game(object):
 
 	@staticmethod
 	def invert(board):
+		'''
+		
+		'''
 		newBoard = []
 		for i in range(len(board)):
 			newBoard.append([row[i] for row in board])
@@ -209,7 +208,7 @@ class game(object):
 
 		returns: True if a move was made, else False
 		'''
-		compareBoard = self.board[:]
+		compareBoard = [row[:] for row in self.board]
 		if direction == 'left' or direction == 'l':
 			self.board = self.shiftLeft(self.board)
 			self.board, self.score = self.mergeLeft(self.board, self.score)
@@ -234,4 +233,3 @@ class game(object):
 			self.addTile()
 		else:
 			raise InvalidMoveError
-
