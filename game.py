@@ -1,4 +1,5 @@
 import random
+from os import system
 
 try:
 	from colorama import init, Fore, Style
@@ -51,6 +52,29 @@ class game(object):
 		for i in range(numStartTiles) :
 			self.addTile()
 
+	def loop(self):
+		system('cls' if os.name == 'nt' else 'clear')
+		self.printBoard()
+		while not self.isOver():
+			try:
+				move = raw_input("Slide: ").lower()
+				if move == 'exit':
+					break
+				elif move == '':
+					pass
+				elif move == 'elite haxor':
+					self.addTile()
+				else:
+					self.slide(move)
+				system('cls' if os.name == 'nt' else 'clear')
+				self.printBoard()
+			except InvalidMoveError:
+				print 'Invalid Move.'
+		if self.isWon():
+			print 'You win!'
+		elif not self.canMove():
+			print 'Game over.'
+		print 'Final Score:', self.getScore()
 
 	def isWon(self):
 		'''
@@ -66,17 +90,21 @@ class game(object):
 	def canMove(self) :
 		'''
 		Sees if there is a possible move that you can make
+
+		returns: list of possible moves if there is at least
+				 one move available, else False
 		'''
 		invertedBoard = self.invert(self.board)
+		possibleMoves = []
 		if self.shiftLeft(self.board) != self.board or self.mergeLeft(self.board, 0)[0] != self.board:
-			return True
+			possibleMoves.append('left')
 		elif self.shiftRight(self.board) != self.board or self.mergeRight(self.board, 0)[0] != self.board:
-			return True
+			possibleMoves.append('right')
 		elif self.shiftLeft(invertedBoard) != invertedBoard or self.mergeLeft(invertedBoard, 0)[0] != invertedBoard:
-			return True
+			possibleMoves.append('up')
 		elif self.shiftRight(invertedBoard) != invertedBoard or self.mergeRight(invertedBoard, 0)[0] != invertedBoard:
-			return True
-		return False
+			possibleMoves.append('down')
+		return possibleMoves if possibleMoves else False
 
 
 	def isOver(self) :
@@ -99,12 +127,14 @@ class game(object):
 		'''
 		Prints the current board in a pretty array fashion
 		'''
-		for row in self.board:
-			for val in row:
+		for rowIndex in range(len(self.board)):
+			for val in self.board[rowIndex]:
 				if COLORAMA :
 					print '{0}{1:<6}'.format(COLORS[val], val),
 				else :
 					print '{:<6}'.format(val),
+			if rowIndex == 0 :
+				print "\tScore:",self.getScore(),
 			print
 
 	def getEmptyTiles(self):
