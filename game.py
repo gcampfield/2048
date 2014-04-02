@@ -107,11 +107,11 @@ class game(object):
 		possibleMoves = []
 		if self.shiftLeft(self.board) != self.board or self.mergeLeft(self.board, 0)[0] != self.board:
 			possibleMoves.append('left')
-		elif self.shiftRight(self.board) != self.board or self.mergeRight(self.board, 0)[0] != self.board:
+		if self.shiftRight(self.board) != self.board or self.mergeRight(self.board, 0)[0] != self.board:
 			possibleMoves.append('right')
-		elif self.shiftLeft(invertedBoard) != invertedBoard or self.mergeLeft(invertedBoard, 0)[0] != invertedBoard:
+		if self.shiftLeft(invertedBoard) != invertedBoard or self.mergeLeft(invertedBoard, 0)[0] != invertedBoard:
 			possibleMoves.append('up')
-		elif self.shiftRight(invertedBoard) != invertedBoard or self.mergeRight(invertedBoard, 0)[0] != invertedBoard:
+		if self.shiftRight(invertedBoard) != invertedBoard or self.mergeRight(invertedBoard, 0)[0] != invertedBoard:
 			possibleMoves.append('down')
 		return possibleMoves if possibleMoves else False
 
