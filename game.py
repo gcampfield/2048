@@ -25,7 +25,7 @@ except:
 	COLORAMA = False
 	print "\033[93mNOTE: in order for text to be colored, you must install 'termred' from PyPI\033[0m\n"
 
-class InvalidMoveError(Exception) :
+class InvalidMoveError(Exception):
 	'''
 	Raised by game.shiftLeft or game.shiftRight if the move
 	did not change anything
@@ -49,10 +49,19 @@ class game(object):
 		self.score = 0
 		self.prob = prob
 		self.goal = goal
-		for i in range(numStartTiles) :
+		for i in range(numStartTiles):
+			self.addTile()
+
+	def reset(self, numStartTiles=2):
+		self.board = [[0 for a in range(self.size)] for b in range(self.size)]
+		self.score = 0
+		for i in range(numStartTiles):
 			self.addTile()
 
 	def loop(self):
+		'''
+		Main loop for the game
+		'''
 		os.system('cls' if os.name == 'nt' else 'clear')
 		self.printBoard()
 		while not self.isOver():
@@ -87,7 +96,7 @@ class game(object):
 				return True
 		return False
 
-	def canMove(self) :
+	def canMove(self):
 		'''
 		Sees if there is a possible move that you can make
 
@@ -107,7 +116,7 @@ class game(object):
 		return possibleMoves if possibleMoves else False
 
 
-	def isOver(self) :
+	def isOver(self):
 		'''
 		Sees if the game is won or if no move is possible
 
@@ -129,11 +138,11 @@ class game(object):
 		'''
 		for rowIndex in range(len(self.board)):
 			for val in self.board[rowIndex]:
-				if COLORAMA :
+				if COLORAMA:
 					print '{0}{1:<6}'.format(COLORS[val], val),
-				else :
+				else:
 					print '{:<6}'.format(val),
-			if rowIndex == 0 :
+			if rowIndex == 0:
 				print "\tScore:",self.getScore(),
 			print
 
@@ -171,8 +180,8 @@ class game(object):
 		returns: new board with elements shifted LEFT
 		'''
 		newBoard = [filter(lambda x: x!=0, row) for row in board]
-		for row in newBoard :
-			while len(row) != len(newBoard) :
+		for row in newBoard:
+			while len(row) != len(newBoard):
 				row.append(0)
 		return newBoard
 
@@ -184,8 +193,8 @@ class game(object):
 		returns: new board with elements shifted RIGHT
 		'''
 		newBoard = [filter(lambda x: x!=0, row) for row in board]
-		for row in newBoard :
-			while len(row) != len(newBoard) :
+		for row in newBoard:
+			while len(row) != len(newBoard):
 				row.insert(0, 0)
 		return newBoard
 
@@ -199,7 +208,7 @@ class game(object):
 		newBoard = [row[:] for row in board]
 		for row in newBoard:
 			for i in range(len(row)-1):
-				if row[i] == row[i+1] :
+				if row[i] == row[i+1]:
 					currentScore += row[i]*2
 					row[i] = row[i]*2
 					row[i+1] = 0
