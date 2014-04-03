@@ -53,6 +53,10 @@ class game(object):
 			self.addTile()
 
 	def reset(self, numStartTiles=2):
+		'''
+		Resets the game - board is cleaned and score is set to
+		0 - and adds numStartTiles to the board
+		'''
 		self.board = [[0 for a in range(self.size)] for b in range(self.size)]
 		self.score = 0
 		for i in range(numStartTiles):
@@ -233,7 +237,11 @@ class game(object):
 	@staticmethod
 	def invert(board):
 		'''
-		
+		Inverts the board - makes number at (x, y) at (y, x) -
+		in order to used shiftLeft/Right and mergeLeft/Right to
+		slide up and down
+
+		returns: inverted board
 		'''
 		newBoard = []
 		for i in range(len(board)):

@@ -4,11 +4,24 @@ from os import system
 
 class SimpleAI(game.game):
 	def __init__(self, r, *args):
+		'''
+		Initializes the AI object using game.game's __init__
+		function.
+
+		r - ratio for heuristic function
+		*args - all other arguments for the creation of the game
+		'''
 		self.r = r
 		game.game.__init__(self, *args)
 		self.testGame = game.game(*args)
 
 	def value(self, board):
+		'''
+		Calculates the 'value' of the board based on the ratio
+		the board given
+
+		returns: heuristic value for the board
+		'''
 		r = 1
 		hScore = 0
 		for rowIndex in range(len(board)):
@@ -19,6 +32,10 @@ class SimpleAI(game.game):
 		return hScore
 
 	def loop(self, printBoard=False):
+		'''
+		Overwrites the loop function in game.game to fit the
+		playstyle of the AI
+		'''
 		while not self.isOver():
 			possible = self.canMove()
 			# print possible
@@ -27,7 +44,6 @@ class SimpleAI(game.game):
 			for move in possible:
 				self.testGame.board = self.board
 				self.testGame.slide(move)
-				# print move, self.value(self.testGame.board)
 				if self.value(self.testGame.board) > bestH:
 					bestH = self.value(self.testGame.board)
 					bestMove = move
@@ -35,6 +51,10 @@ class SimpleAI(game.game):
 		if printBoard: self.printBoard() 
 
 	def simPlay(self, numTrials):
+		'''
+		Plays a 2048 game from start to finish numTrials times
+		and prints the max, min, and average score
+		'''
 		try:
 			scores = []
 			for i in range(numTrials):
