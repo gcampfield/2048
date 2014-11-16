@@ -18,6 +18,7 @@ try:
          512: Fore.GREEN,
         1024: Fore.RED,
         2048: Fore.YELLOW,
+        # For overacheivers like August
         4096: Fore.MAGENTA,
         8192: Fore.CYAN,
     }
@@ -27,12 +28,12 @@ except:
 
 class InvalidMoveError(Exception):
 	'''
-	Raised by game.shiftLeft or game.shiftRight if the move
+	Raised by Game.shiftLeft or Game.shiftRight if the move
 	did not change anything
 	'''
 	pass
 
-class game(object):
+class Game(object):
 	def __init__(self, size=4, prob=.9, goal=2048, numStartTiles=2):
 		'''
 		Initializes the game with a board size x size big with numStartTiles
@@ -203,12 +204,13 @@ class game(object):
 		return newBoard
 
 	@staticmethod
-	def mergeLeft(board, currentScore):
+	def mergeLeft(board, score):
 		'''
 		Merges identical values favoring the LEFT
 
 		returns: the new board, new score
 		'''
+		currentScore = score
 		newBoard = [row[:] for row in board]
 		for row in newBoard:
 			for i in range(len(row)-1):
@@ -219,12 +221,13 @@ class game(object):
 		return newBoard, currentScore
 
 	@staticmethod
-	def mergeRight(board, currentScore):
+	def mergeRight(board, score):
 		'''
 		Merges identical values favoring the RIGHT
 
 		returns: the new board, new score
 		'''
+		currentScore = score
 		newBoard = [row[:] for row in board]
 		for row in newBoard:
 			for i in range(len(row)-1)[::-1]:
@@ -278,5 +281,5 @@ class game(object):
 			self.board = self.invert(invertedBoard)
 		if compareBoard != self.board and addTile:
 			self.addTile()
-		else:
+		elif addTile:
 			raise InvalidMoveError

@@ -1,6 +1,6 @@
 import game
 action = 'y'
-g = game.game()
+g = game.Game()
 while action == 'y':
 	g.loop()
 	action = raw_input('Would you like to play again? (y/n) ').lower()
