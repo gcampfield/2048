@@ -1,5 +1,5 @@
-2048
-====
+2048py
+======
 
 A remake of the 2048 game in Python and an AI to play it.
 
